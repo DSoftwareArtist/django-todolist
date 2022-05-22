@@ -21,3 +21,4 @@ results
 logs
 *.logs
 venv
+static
