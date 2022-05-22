@@ -28,6 +28,7 @@ class TodoList(models.Model):
 
 class Todo(models.Model):
     description = models.CharField(max_length=128)
+    position = models.FloatField(null=True)
     created_at = models.DateTimeField(auto_now=True)
     finished_at = models.DateTimeField(null=True)
     is_finished = models.BooleanField(default=False)
@@ -39,10 +40,15 @@ class Todo(models.Model):
     )
 
     class Meta:
-        ordering = ("created_at",)
-
+        ordering = ("position",)
+        
     def __str__(self):
         return self.description
+
+    def save(self, *args, **kwargs):
+        super(Todo, self).save(*args, **kwargs)
+        if not self.position: Todo.objects.filter(id=self.pk).update(position=self.pk)
+            
 
     def close(self):
         self.is_finished = True

@@ -38,4 +38,5 @@ class TodoSerializer(serializers.ModelSerializer):
             "creator",
             "is_finished",
             "finished_at",
+            "position"
         )

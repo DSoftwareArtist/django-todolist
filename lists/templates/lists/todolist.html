@@ -25,7 +25,7 @@
         <ul id="open-tasks" class="connectedTasks">
           {% for todo in todolist.todos.all %}
             {% if not todo.is_finished %}
-              <li id="{{ todo.id }}" class="ui-state-default item-todos active-item"><input type="checkbox" id="checkbox-{{ todo.id }}" data-todo-id="{{ todo.id }}"> {{ todo.description }}</li>
+              <li id="{{ todo.id }}-{{ todo.position }}" class="ui-state-default item-todos active-item"><input type="checkbox" id="checkbox-{{ todo.id }}" data-todo-id="{{ todo.id }}"> {{ todo.description }}</li>
             {% endif %}
           {% endfor %}
         </ul>
@@ -35,7 +35,7 @@
         <ul id="finished-tasks" class="connectedTasks">
           {% for todo in todolist.todos.all %}
             {% if todo.is_finished %}
-            <li id="{{ todo.id }}" class="ui-state-default item-todos"><input type="checkbox" id="checkbox-{{ todo.id }}" data-todo-id="{{ todo.id }}" checked="checked"> {{ todo.description }}</li>
+            <li id="{{ todo.id }}-{{ todo.position }}" class="ui-state-default item-todos"><input type="checkbox" id="checkbox-{{ todo.id }}" data-todo-id="{{ todo.id }}" checked="checked"> {{ todo.description }}</li>
             {% endif %}
           {% endfor %}
         </ul>

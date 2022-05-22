@@ -5,7 +5,7 @@ from django.contrib import admin
 from lists.models import Todo
 
 class TodoAdmin(admin.ModelAdmin):
-	list_display = ('creator','description','created_at','finished_at','is_finished')
+	list_display = ('creator','description','created_at','finished_at','is_finished', 'position')
 
 admin.site.register(Todo, TodoAdmin)
 

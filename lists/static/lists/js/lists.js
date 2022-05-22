@@ -7,13 +7,26 @@ $( function() {
       connectWith: ".connectedTasks",
       cursor: "move",
       receive: function (event, ui) {
-          console.log('received')
-          const item = ui.item.not()
-          const todoID = item[0].id
-          const sender = ui.sender.not()[0].id
+          const prevRef = ui.item.prev().attr("id")
+          const nextRef = ui.item.next().attr("id")
+          let newPosition
+          let position
+          if (prevRef != undefined) {
+            position = parseFloat(prevRef.split('-')[1])
+            newPosition = position + 0.001
+          } else {
+            if (nextRef != undefined) {
+              position = parseFloat(nextRef.split('-')[1])
+              newPosition = position - 0.001
+            }
+          }
+          
+          const currRef = ui.item.attr("id")
+          const todoID = parseInt(currRef.split('-')[0])
+          const sender = ui.sender.attr("id")
           $( "#checkbox-" + todoID ).prop( "checked", true );
           const value = sender === 'open-tasks'
-          putNewStatus(todoID, value)
+          putNewStatus(todoID, value, newPosition)
       }
   }).disableSelection();
 } );
@@ -46,7 +59,7 @@ function getCookie(name) {
   return cookieValue;
 }
 
-function putNewStatus(todoID, isFinished) {
+function putNewStatus(todoID, isFinished, position=0) {
   // setup ajax to csrf token
   var csrftoken = getCookie('csrftoken');
   $.ajaxSetup({
@@ -60,6 +73,9 @@ function putNewStatus(todoID, isFinished) {
   var todoURL = '/api/todos/' + todoID + '/'
   $.getJSON(todoURL, function(data) {
     data.is_finished = isFinished;
+    if (position) {
+      data.position = position
+    }
     if (isFinished) {
       data.finished_at = moment().toISOString();
     } else {
