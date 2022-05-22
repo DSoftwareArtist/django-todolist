@@ -2,6 +2,22 @@ $(document).ready(function() {
   $(':checkbox').on('click', changeTodoStatus);
 });
 
+$( function() {
+  $( "#open-tasks, #finished-tasks" ).sortable({
+      connectWith: ".connectedTasks",
+      cursor: "move",
+      receive: function (event, ui) {
+          console.log('received')
+          const item = ui.item.not()
+          const todoID = item[0].id
+          const sender = ui.sender.not()[0].id
+          $( "#checkbox-" + todoID ).prop( "checked", true );
+          const value = sender === 'open-tasks'
+          putNewStatus(todoID, value)
+      }
+  }).disableSelection();
+} );
+
 function changeTodoStatus() {
   putNewStatus(this.getAttribute('data-todo-id'), $(this).is(':checked'));
 }
