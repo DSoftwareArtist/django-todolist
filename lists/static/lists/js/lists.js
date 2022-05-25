@@ -3,30 +3,26 @@ $(document).ready(function() {
 });
 
 $( function() {
-  $( "#open-tasks, #finished-tasks" ).sortable({
-      connectWith: ".connectedTasks",
+  $( "#open-tasks" ).sortable({
       cursor: "move",
-      receive: function (event, ui) {
-          const prevRef = ui.item.prev().attr("id")
-          const nextRef = ui.item.next().attr("id")
-          let newPosition
-          let position
+      update: function (event, ui) {
+        const prevRef = ui.item.prev().attr("id")
+        const nextRef = ui.item.next().attr("id")
+        let newPosition
+        let position
+        if (nextRef != undefined) {
+          position = parseFloat(nextRef.split('-')[1])
+          newPosition = position - 0.001
+        } else {
           if (prevRef != undefined) {
             position = parseFloat(prevRef.split('-')[1])
             newPosition = position + 0.001
-          } else {
-            if (nextRef != undefined) {
-              position = parseFloat(nextRef.split('-')[1])
-              newPosition = position - 0.001
-            }
-          }
-          
-          const currRef = ui.item.attr("id")
-          const todoID = parseInt(currRef.split('-')[0])
-          const sender = ui.sender.attr("id")
-          $( "#checkbox-" + todoID ).prop( "checked", true );
-          const value = sender === 'open-tasks'
-          putNewStatus(todoID, value, newPosition)
+          } 
+        }
+        
+        const currRef = ui.item.attr("id")
+        const todoID = parseInt(currRef.split('-')[0])
+        putNewStatus(todoID, false, newPosition)
       }
   }).disableSelection();
 } );

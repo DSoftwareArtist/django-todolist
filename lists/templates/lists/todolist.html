@@ -22,8 +22,8 @@
     <div class="row">
       <div class="one-half column open-todos">
         <h6 class="docs-header open-todos">{{ todolist.count_open }} open</h6>
-        <ul id="open-tasks" class="connectedTasks">
-          {% for todo in todolist.todos.all %}
+        <ul id="open-tasks" class="connectedTasks reamon">
+          {% for todo in todolist.todos %}
             {% if not todo.is_finished %}
               <li id="{{ todo.id }}-{{ todo.position }}" class="ui-state-default item-todos active-item"><input type="checkbox" id="checkbox-{{ todo.id }}" data-todo-id="{{ todo.id }}"> {{ todo.description }}</li>
             {% endif %}
@@ -33,7 +33,7 @@
       <div class="one-half column finished-todos">
         <h6 class="docs-header finished-todos">{{ todolist.count_finished }} finished</h6>
         <ul id="finished-tasks" class="connectedTasks">
-          {% for todo in todolist.todos.all %}
+          {% for todo in todolist.todos %}
             {% if todo.is_finished %}
             <li id="{{ todo.id }}-{{ todo.position }}" class="ui-state-default item-todos"><input type="checkbox" id="checkbox-{{ todo.id }}" data-todo-id="{{ todo.id }}" checked="checked"> {{ todo.description }}</li>
             {% endif %}
