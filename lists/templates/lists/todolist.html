@@ -22,8 +22,8 @@
     <div class="row">
       <div class="one-half column open-todos">
         <h6 class="docs-header open-todos">{{ todolist.count_open }} open</h6>
-        <ul id="open-tasks" class="connectedTasks reamon">
-          {% for todo in todolist.todos %}
+        <ul id="open-tasks">
+          {% for todo in todolist.todos.all %}
             {% if not todo.is_finished %}
               <li id="{{ todo.id }}-{{ todo.position }}" class="ui-state-default item-todos active-item"><input type="checkbox" id="checkbox-{{ todo.id }}" data-todo-id="{{ todo.id }}"> {{ todo.description }}</li>
             {% endif %}
@@ -32,8 +32,8 @@
       </div>
       <div class="one-half column finished-todos">
         <h6 class="docs-header finished-todos">{{ todolist.count_finished }} finished</h6>
-        <ul id="finished-tasks" class="connectedTasks">
-          {% for todo in todolist.todos %}
+        <ul id="finished-tasks">
+          {% for todo in todolist.todos.all %}
             {% if todo.is_finished %}
             <li id="{{ todo.id }}-{{ todo.position }}" class="ui-state-default item-todos"><input type="checkbox" id="checkbox-{{ todo.id }}" data-todo-id="{{ todo.id }}" checked="checked"> {{ todo.description }}</li>
             {% endif %}
@@ -42,5 +42,26 @@
       </div>
     </div>
   </div>
+  <script>
+    
+    var todolist = '{{ todolist.id }}'
+    const path = 'ws://' + window.location.host + '/ws/todolist/'+ todolist + '/'
+    var socket = new WebSocket(path);
+
+    socket.onopen = function open() {
+      console.log('WebSockets connection created.');
+    };
+
+    socket.onmessage = function (e) {
+        location.reload()
+    };
+
+    if (socket.readyState == WebSocket.OPEN) {
+      socket.onopen();
+    }
+  </script>
 </section>
 {% endblock %}
+
+{% block script %}
+{% endblock script %}

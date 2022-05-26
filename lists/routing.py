@@ -1,8 +1,6 @@
-from django.urls import re_path
-
-from lists.consumers import *
-
+from django.conf.urls import url
+from lists.consumers import TodoListConsumer
 
 websocket_urlpatterns = [
-    re_path(r'ws/(?P<user_id>((\w+|-+)+))/$', MainConsumer.as_asgi()),
+    url(r'^ws/todolist/(?P<todolist>\w+)/$', TodoListConsumer.as_asgi()),
 ]

@@ -45,11 +45,6 @@ class Todo(models.Model):
     def __str__(self):
         return self.description
 
-    def save(self, *args, **kwargs):
-        super(Todo, self).save(*args, **kwargs)
-        if not self.position: Todo.objects.filter(id=self.pk).update(position=self.pk)
-            
-
     def close(self):
         self.is_finished = True
         self.finished_at = timezone.now()

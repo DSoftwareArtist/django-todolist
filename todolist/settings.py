@@ -10,7 +10,6 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
-from decouple import config
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
@@ -58,8 +57,8 @@ MIDDLEWARE = (
 
 ROOT_URLCONF = "todolist.urls"
 
-WSGI_APPLICATION = "todolist.wsgi.application"
-ASGI_APPLICATION = "todolist.asgi.application"
+# WSGI_APPLICATION = "todolist.wsgi.application"
+
 
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
@@ -99,23 +98,13 @@ LOGIN_URL = "/auth/login/"
 
 LOGOUT_URL = "/auth/logout/"
 
-# Redis
-REDIS_HOST = config('REDIS_HOST', default='localhost')
-REDIS_USER = config('REDIS_USER', default='')
-REDIS_PASSWORD = config('REDIS_PASSWORD', default='')
-REDIS_PORT = config('REDIS_PORT', default=6379)
-
 #  Django -Channels
-CHANNEL_HOST = f"redis://:{REDIS_PASSWORD}@{REDIS_HOST}:{REDIS_PORT}/0"
 CHANNEL_LAYERS = {
     'default': {
-        'BACKEND': 'channels_redis.core.RedisChannelLayer',
-        'CONFIG': {
-            'hosts': [CHANNEL_HOST]
-        },
+        "BACKEND": "channels.layers.InMemoryChannelLayer"
     }
 }
-MAIN_ROOM = 'hub'
+MAIN_ROOM = 'todolist'
 # rest (api) framework
 REST_FRAMEWORK = {
     "DEFAULT_PERMISSION_CLASSES": [
@@ -137,3 +126,5 @@ TEMPLATES = [
         },
     },
 ]
+
+ASGI_APPLICATION = "todolist.asgi.application"

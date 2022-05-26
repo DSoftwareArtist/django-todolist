@@ -1,10 +1,10 @@
+from telnetlib import STATUS
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 
 from lists.forms import TodoForm, TodoListForm
 from lists.models import Todo, TodoList
-from lists.utils import clean_up
 
 def index(request):
     return render(request, "lists/index.html", {"form": TodoForm()})
@@ -14,9 +14,8 @@ def todolist(request, todolist_id):
     todolist = get_object_or_404(TodoList, pk=todolist_id)
     if request.method == "POST":
         redirect("lists:add_todo", todolist_id=todolist_id)
-    clean_data = clean_up(todolist)
     return render(
-        request, "lists/todolist.html", {"todolist": clean_data, "form": TodoForm()}
+        request, "lists/todolist.html", {"todolist": todolist, "form": TodoForm()}
     )
 
 
